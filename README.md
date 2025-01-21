@@ -1,6 +1,7 @@
 # hass-blueprints
 Collection of Home Assistant Blueprints used in automation
 
+----- 
 
 ### Zigbee2MQTT Samsung SmartThings Button - event entity
 
