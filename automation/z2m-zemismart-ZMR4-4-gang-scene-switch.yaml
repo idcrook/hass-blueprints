@@ -1,0 +1,127 @@
+blueprint:
+  name: Zigbee2MQTT Zemismart ZMR-4 4-gang Scene Switch
+  description:  
+    "Tested with ZMR4 model. Has four buttons. each of which have press events of `single`, `double`, and `hold`.
+    \n\n
+    To have different actions on short press and on hold (long press), use 'button release' (`*_press_release`) and 'button hold once' (`*_hold_once`) commands,
+    as 'press' (`*_press`) will always trigger before 'button hold' (`*_hold`).
+    \n\n
+    <https://www.zigbee2mqtt.io/devices/ZMR4.html> linked interchangeably with <https://www.zigbee2mqtt.io/devices/TS0044.html#tuya-ts0044>
+    \n\n
+    As 'button hold' action is repeated by the device while you keep holding the button, it's a good way to run actions which increment / decrement some value (such as light dimming).
+    To make it react as soon as the button is pressed, copy the same action to 'button press' (press action occurs immediately, while hold action occurs after a delay).
+    \n\n
+    Make sure to manually create a separate Text Helper per dimmer device and define its entity in the automation. It's used to store the last controller event to filter possible
+    empty events and handle 'button hold once' actions.
+    "  
+  domain: automation
+  input:
+    zemismart_zmr4:
+      name: Zemismart ZMR-4 Scene Switch
+      description: The Zigbee button to use
+      selector:
+        entity:
+          filter:
+            - integration: mqtt
+              domain: event
+          multiple: false
+    button_1_short_press:
+      name: Single Press - Button 1
+      description: Action to run on button 1 single press
+      default: []
+      selector:
+        action: {}
+    button_1_double_press:
+      name: Double Press - Button 1
+      description: Action to run on button 1 double press
+      default: []
+      selector:
+        action: {}
+    button_1_hold:
+      name: Hold - Button 1
+      description: Action to run on button 1 long press
+      default: []
+      selector:
+        action: {}
+    button_2_short_press:
+      name: Single Press - Button 2
+      description: Action to run on button 2 single press
+      default: []
+      selector:
+        action: {}
+    button_2_double_press:
+      name: Double Press - Button 2
+      description: Action to run on button 2 double press
+      default: []
+      selector:
+        action: {}
+    button_2_hold:
+      name: Hold - Button 2
+      description: Action to run on button 2 long press
+      default: []
+      selector:
+        action: {}
+    button_3_short_press:
+      name: Single Press - Button 3
+      description: Action to run on button 3 single press
+      default: []
+      selector:
+        action: {}
+    button_3_double_press:
+      name: Double Press - Button 3
+      description: Action to run on button 3 double press
+      default: []
+      selector:
+        action: {}
+    button_3_hold:
+      name: Hold - Button 3
+      description: Action to run on button 3 long press
+      default: []
+      selector:
+        action: {}
+    button_4_short_press:
+      name: Single Press - Button 4
+      description: Action to run on button 4 single press
+      default: []
+      selector:
+        action: {}
+    button_4_double_press:
+      name: Double Press - Button 4
+      description: Action to run on button 4 double press
+      default: []
+      selector:
+        action: {}
+    button_4_hold:
+      name: Long Press - Button 4
+      description: Action to run on button 4 long press
+      default: []
+      selector:
+        action: {}
+  # originally from https://community.home-assistant.io/t/zigbee2mqtt-z2m-samsung-smartthings-button/419722
+  # copied from https://gist.github.com/idcrook/a5406ea0bb911435603958351858f466
+  source_url: https://raw.githubusercontent.com/idcrook/hass-blueprints/refs/heads/main/automation/z2m-samsung-smartthings-button-event-entity.yaml
+mode: queued
+max_exceeded: silent
+triggers:
+  - trigger: state
+    entity_id: !input zemismart_zmr4
+    #not_from: unavailable
+    to: ~
+action:
+  - variables:
+      # ["off","single","double","hold"]
+      event_type: "{{ trigger.to_state.attributes.event_type }}"
+  - choose:
+      - conditions:
+          - "{{trigger.from_state.state != 'unavailable'}}"
+          - "{{ event_type == '1_single' }}"
+        sequence: !input button_1_short_press
+      - conditions:
+          - "{{trigger.from_state.state != 'unavailable'}}"
+          - "{{ event_type == '1_double' }}"
+        sequence: !input button_1_double_press
+      - conditions:
+          - "{{trigger.from_state.state != 'unavailable'}}"
+          - "{{ event_type == '1_hold' }}"
+        sequence: !input button_1_hold
+
