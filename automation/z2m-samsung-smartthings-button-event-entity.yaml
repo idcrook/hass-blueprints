@@ -1,0 +1,58 @@
+blueprint:
+  name: Zigbee2MQTT Samsung SmartThings Button - event entity
+  description: Automate your Samsung SmartThings button using Zigbee2MQTT 2.0.
+  domain: automation
+  input:
+    samsung_smartthings_button:
+      name: Samsung SmartThings Button
+      description: The Samsung SmartThings button to use
+      selector:
+        entity:
+          filter:
+            - integration: mqtt
+              domain: event
+          multiple: false
+    remote_button_short_press:
+      name: Single Press
+      description: Action to run on single press
+      default: []
+      selector:
+        action: {}
+    remote_button_double_press:
+      name: Double Press
+      description: Action to run on double press
+      default: []
+      selector:
+        action: {}
+    remote_button_hold_press:
+      name: Hold Press
+      description: Action to run on hold
+      default: []
+      selector:
+        action: {}
+  # originally from https://community.home-assistant.io/t/zigbee2mqtt-z2m-samsung-smartthings-button/419722
+  # copied from https://gist.github.com/idcrook/a5406ea0bb911435603958351858f466
+  source_url: https://raw.githubusercontent.com/idcrook/hass-blueprints/refs/heads/main/automation/z2m-samsung-smartthings-button-event-entity.yaml
+mode: restart
+max_exceeded: silent
+triggers:
+  - trigger: state
+    entity_id: !input samsung_smartthings_button
+    to: ~
+action:
+  - variables:
+      # ["off","single","double","hold"]
+      event_type: "{{ trigger.to_state.attributes.event_type }}"
+  - choose:
+      - conditions:
+          - "{{trigger.from_state.state != 'unavailable'}}"
+          - "{{ event_type == 'single' }}"
+        sequence: !input remote_button_short_press
+      - conditions:
+          - "{{trigger.from_state.state != 'unavailable'}}"
+          - "{{ event_type == 'double' }}"
+        sequence: !input remote_button_double_press
+      - conditions:
+          - "{{trigger.from_state.state != 'unavailable'}}"
+          - "{{ event_type == 'hold' }}"
+        sequence: !input remote_button_hold_press
