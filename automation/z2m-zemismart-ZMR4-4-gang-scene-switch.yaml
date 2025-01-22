@@ -4,6 +4,8 @@ blueprint:
     "Tested with ZMR4 model. Has four buttons. each of which have press events of `single`, `double`, and `hold`.
     \n\n
     <https://www.zigbee2mqtt.io/devices/ZMR4.html> linked interchangeably with <https://www.zigbee2mqtt.io/devices/TS0044.html#tuya-ts0044>
+    \n\n
+    Uses event entities that are leaving experimental stage in Z2M 2.0
     "  
   domain: automation
   input:
