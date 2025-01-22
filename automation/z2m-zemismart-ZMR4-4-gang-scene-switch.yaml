@@ -3,16 +3,7 @@ blueprint:
   description:  
     "Tested with ZMR4 model. Has four buttons. each of which have press events of `single`, `double`, and `hold`.
     \n\n
-    To have different actions on short press and on hold (long press), use 'button release' (`*_press_release`) and 'button hold once' (`*_hold_once`) commands,
-    as 'press' (`*_press`) will always trigger before 'button hold' (`*_hold`).
-    \n\n
     <https://www.zigbee2mqtt.io/devices/ZMR4.html> linked interchangeably with <https://www.zigbee2mqtt.io/devices/TS0044.html#tuya-ts0044>
-    \n\n
-    As 'button hold' action is repeated by the device while you keep holding the button, it's a good way to run actions which increment / decrement some value (such as light dimming).
-    To make it react as soon as the button is pressed, copy the same action to 'button press' (press action occurs immediately, while hold action occurs after a delay).
-    \n\n
-    Make sure to manually create a separate Text Helper per dimmer device and define its entity in the automation. It's used to store the last controller event to filter possible
-    empty events and handle 'button hold once' actions.
     "  
   domain: automation
   input:
@@ -123,4 +114,40 @@ action:
           - "{{trigger.from_state.state != 'unavailable'}}"
           - "{{ event_type == '1_hold' }}"
         sequence: !input button_1_hold
+      - conditions:
+          - "{{trigger.from_state.state != 'unavailable'}}"
+          - "{{ event_type == '2_single' }}"
+        sequence: !input button_2_short_press
+      - conditions:
+          - "{{trigger.from_state.state != 'unavailable'}}"
+          - "{{ event_type == '2_double' }}"
+        sequence: !input button_2_double_press
+      - conditions:
+          - "{{trigger.from_state.state != 'unavailable'}}"
+          - "{{ event_type == '2_hold' }}"
+        sequence: !input button_2_hold
+      - conditions:
+          - "{{trigger.from_state.state != 'unavailable'}}"
+          - "{{ event_type == '3_single' }}"
+        sequence: !input button_3_short_press
+      - conditions:
+          - "{{trigger.from_state.state != 'unavailable'}}"
+          - "{{ event_type == '3_double' }}"
+        sequence: !input button_3_double_press
+      - conditions:
+          - "{{trigger.from_state.state != 'unavailable'}}"
+          - "{{ event_type == '3_hold' }}"
+        sequence: !input button_3_hold
+      - conditions:
+          - "{{trigger.from_state.state != 'unavailable'}}"
+          - "{{ event_type == '4_single' }}"
+        sequence: !input button_4_short_press
+      - conditions:
+          - "{{trigger.from_state.state != 'unavailable'}}"
+          - "{{ event_type == '4_double' }}"
+        sequence: !input button_4_double_press
+      - conditions:
+          - "{{trigger.from_state.state != 'unavailable'}}"
+          - "{{ event_type == '4_hold' }}"
+        sequence: !input button_4_hold        
 
