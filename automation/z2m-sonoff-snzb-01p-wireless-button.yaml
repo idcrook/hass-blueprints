@@ -9,8 +9,8 @@ blueprint:
       selector:
         entity:
           # integration: mqtt
-          # domain: event
-          device_class: button
+          domain: event
+          # device_class: button
           # manufacturer: SONOFF
           multiple: false
     single_press:
