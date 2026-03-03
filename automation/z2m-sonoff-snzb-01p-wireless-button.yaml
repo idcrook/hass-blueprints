@@ -3,53 +3,129 @@ blueprint:
   description: Automate your Sonoff SNZB-01 Zigbee Wireless Switch via Zigbee2MQTT.
   domain: automation
   input:
-    switch:
-      name: Sonoff SNZB-01 Zigbee Wireless Switch
-      description: Sonoff SNZB-01 Zigbee Wireless Switch to use
+    input_device_id:
+      name: Device Name
+      description: Device used to trigger actions
       selector:
-        entity:
-          # integration: mqtt
-          domain: event
-          # device_class: button
-          # manufacturer: SONOFF
+        device:
+          entity:
+            - integration: mqtt
+              domain:
+                - sensor
           multiple: false
-    single_press:
-      name: Single Press
-      description: Action to run on single press
+    press_single:
+      name: Single button press
+      description: Action to run on single button press
       default: []
       selector:
         action: {}
-    double_press:
-      name: Double Press
-      description: Action to run on double press
+    press_double:
+      name: Double button press
+      description: Action to run on double button press
       default: []
       selector:
         action: {}
-    long_press:
-      name: Long Press
-      description: Action to run on long press (4 seconds)
+    press_hold:
+      name: Button hold
+      description: Action to run on hold
       default: []
       selector:
         action: {}
   source_url: https://github.com/idcrook/hass-blueprints/blob/main/automation/z2m-sonoff-snzb-01p-wireless-button.yaml
     # https://gist.github.com/denselm/5049daf0d2812c8b6ae9a6dc298f471c
-    # https://github.com/AramidX/ha-blueprint/blob/main/blueprints/sonoff/sonoff_snzb01_wireless_switch_z2m.yaml
 mode: restart
 max_exceeded: silent
-trigger:
-- platform: state
-  entity_id: !input "switch"
-  attribute: action
-action:
-- variables:
-    command: "{{ trigger.to_state.state }}"
-- choose:
-  - conditions:
-    - "{{ command == 'single' }}"
-    sequence: !input "single_press"
-  - conditions:
-    - "{{ command == 'double' }}"
-    sequence: !input "double_press"
-  - conditions:
-    - "{{ command == 'long' }}"
-    sequence: !input "long_press"
+triggers:
+- domain: mqtt
+  device_id: !input input_device_id
+  type: action
+  subtype: single
+  trigger: device
+  id: single
+- domain: mqtt
+  device_id: !input input_device_id
+  type: action
+  subtype: double
+  trigger: device
+  id: double
+- domain: mqtt
+  device_id: !input input_device_id
+  type: action
+  subtype: hold
+  trigger: device
+  id: hold
+actions:
+- if:
+    - condition: trigger
+      id:
+        - single
+  then:
+    - sequence: !input press_single
+- if:
+    - condition: trigger
+      id:
+        - double
+  then:
+    - sequence: !input press_double
+- if:
+    - condition: trigger
+      id:
+        - hold
+  then:
+    - sequence: !input press_hold
+
+# blueprint:
+#   name: Z2M - Sonoff SNZB-01P Zigbee Wireless Switch
+#   description: Automate your Sonoff SNZB-01 Zigbee Wireless Switch via Zigbee2MQTT.
+#   domain: automation
+#   input:
+#     switch:
+#       name: Sonoff SNZB-01 Zigbee Wireless Switch
+#       description: Sonoff SNZB-01 Zigbee Wireless Switch to use
+#       selector:
+#         entity:
+#           # integration: mqtt
+#           domain: event
+#           # device_class: button
+#           # manufacturer: SONOFF
+#           multiple: false
+#     single_press:
+#       name: Single Press
+#       description: Action to run on single press
+#       default: []
+#       selector:
+#         action: {}
+#     double_press:
+#       name: Double Press
+#       description: Action to run on double press
+#       default: []
+#       selector:
+#         action: {}
+#     long_press:
+#       name: Long Press
+#       description: Action to run on long press (4 seconds)
+#       default: []
+#       selector:
+#         action: {}
+#   source_url: https://github.com/idcrook/hass-blueprints/blob/main/automation/z2m-sonoff-snzb-01p-wireless-button.yaml
+#     # https://gist.github.com/denselm/5049daf0d2812c8b6ae9a6dc298f471c
+#     # https://github.com/AramidX/ha-blueprint/blob/main/blueprints/sonoff/sonoff_snzb01_wireless_switch_z2m.yaml
+# mode: restart
+# max_exceeded: silent
+# trigger:
+# - platform: state
+#   entity_id: !input "switch"
+#   attribute: action
+# action:
+# - variables:
+#     command: "{{ trigger.to_state.state }}"
+# - choose:
+#   - conditions:
+#     - "{{ command == 'single' }}"
+#     sequence: !input "single_press"
+#   - conditions:
+#     - "{{ command == 'double' }}"
+#     sequence: !input "double_press"
+#   - conditions:
+#     - "{{ command == 'long' }}"
+#     sequence: !input "long_press"
