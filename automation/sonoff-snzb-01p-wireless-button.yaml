@@ -8,8 +8,8 @@ blueprint:
       description: The button to configure.
       selector:
         device:
-          # manufacturer: eWeLink
-          model: SNZB-01P
+          manufacturer: SONOFF
+          #model: SNZB-01P
           multiple: false
     press_action:
       name: Press Action
