@@ -25,9 +25,9 @@ blueprint:
       default: []
       selector:
         action: {}
-    press_hold:
-      name: Button hold
-      description: Action to run on hold
+    press_long:
+      name: Button long press
+      description: Action to run on long press
       default: []
       selector:
         action: {}
@@ -51,9 +51,9 @@ triggers:
 - domain: mqtt
   device_id: !input input_device_id
   type: action
-  subtype: hold
+  subtype: long
   trigger: device
-  id: hold
+  id: long
 actions:
 - if:
     - condition: trigger
@@ -70,9 +70,9 @@ actions:
 - if:
     - condition: trigger
       id:
-        - hold
+        - long
   then:
-    - sequence: !input press_hold
+    - sequence: !input press_long
 
 # found via:
 # - https://gist.github.com/rhl2401/871cdc129c2d61f894407bef4b44f07d?permalink_comment_id=5374517#gistcomment-5374517
