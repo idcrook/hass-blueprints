@@ -1,6 +1,6 @@
 blueprint:
   name: Z2M - Sonoff SNZB-01P Zigbee Wireless Switch
-  description: Automate your Sonoff SNZB-01 Zigbee Wireless Switch via Zigbee2MQTT.
+  description: Automate your Sonoff SNZB-01 Zigbee Wireless Switch via Zigbee2MQTT. Adapted from a similar aqara automation, but dropping 'release' action
   domain: automation
   input:
     input_device_id:
@@ -74,58 +74,9 @@ actions:
   then:
     - sequence: !input press_hold
 
-# blueprint:
-#   name: Z2M - Sonoff SNZB-01P Zigbee Wireless Switch
-#   description: Automate your Sonoff SNZB-01 Zigbee Wireless Switch via Zigbee2MQTT.
-#   domain: automation
-#   input:
-#     switch:
-#       name: Sonoff SNZB-01 Zigbee Wireless Switch
-#       description: Sonoff SNZB-01 Zigbee Wireless Switch to use
-#       selector:
-#         entity:
-#           # integration: mqtt
-#           domain: event
-#           # device_class: button
-#           # manufacturer: SONOFF
-#           multiple: false
-#     single_press:
-#       name: Single Press
-#       description: Action to run on single press
-#       default: []
-#       selector:
-#         action: {}
-#     double_press:
-#       name: Double Press
-#       description: Action to run on double press
-#       default: []
-#       selector:
-#         action: {}
-#     long_press:
-#       name: Long Press
-#       description: Action to run on long press (4 seconds)
-#       default: []
-#       selector:
-#         action: {}
-#   source_url: https://github.com/idcrook/hass-blueprints/blob/main/automation/z2m-sonoff-snzb-01p-wireless-button.yaml
-#     # https://gist.github.com/denselm/5049daf0d2812c8b6ae9a6dc298f471c
-#     # https://github.com/AramidX/ha-blueprint/blob/main/blueprints/sonoff/sonoff_snzb01_wireless_switch_z2m.yaml
-# mode: restart
-# max_exceeded: silent
-# trigger:
-# - platform: state
-#   entity_id: !input "switch"
-#   attribute: action
-# action:
-# - variables:
-#     command: "{{ trigger.to_state.state }}"
-# - choose:
-#   - conditions:
-#     - "{{ command == 'single' }}"
-#     sequence: !input "single_press"
-#   - conditions:
-#     - "{{ command == 'double' }}"
-#     sequence: !input "double_press"
-#   - conditions:
-#     - "{{ command == 'long' }}"
-#     sequence: !input "long_press"
+# found via:
+# - https://gist.github.com/rhl2401/871cdc129c2d61f894407bef4b44f07d?permalink_comment_id=5374517#gistcomment-5374517
+#
+# - https://community.home-assistant.io/t/aqara-wireless-switch-zigbee2mqtt-single-double-and-hold-action/275984
+# SEE ALSO:
+# - https://gist.github.com/stncttr908/d0417344a66ab8cc1230a7ead3f5df68
