@@ -8,8 +8,9 @@ blueprint:
       description: Sonoff SNZB-01 Zigbee Wireless Switch to use
       selector:
         entity:
-          integration: mqtt
-          domain: event
+          # integration: mqtt
+          # domain: event
+          device_class: event
           # manufacturer: SONOFF
           multiple: false
     single_press:
