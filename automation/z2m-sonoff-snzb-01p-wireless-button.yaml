@@ -10,7 +10,7 @@ blueprint:
         entity:
           integration: mqtt
           domain: sensor
-          manufacturer: SONOFF
+          # manufacturer: SONOFF
           multiple: false
     single_press:
       name: Single Press
@@ -31,6 +31,7 @@ blueprint:
       selector:
         action: {}
   source_url: https://github.com/idcrook/hass-blueprints/blob/main/automation/z2m-sonoff-snzb-01p-wireless-button.yaml
+    # https://gist.github.com/denselm/5049daf0d2812c8b6ae9a6dc298f471c
     # https://github.com/AramidX/ha-blueprint/blob/main/blueprints/sonoff/sonoff_snzb01_wireless_switch_z2m.yaml
 mode: restart
 max_exceeded: silent
