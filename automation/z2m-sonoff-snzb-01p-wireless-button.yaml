@@ -80,3 +80,5 @@ actions:
 # - https://community.home-assistant.io/t/aqara-wireless-switch-zigbee2mqtt-single-double-and-hold-action/275984
 # SEE ALSO:
 # - https://gist.github.com/stncttr908/d0417344a66ab8cc1230a7ead3f5df68
+# - https://gist.github.com/rdeangel/11f5b0ec29bf22af83d7b7489a541ac2
+# - https://community.home-assistant.io/t/zigbee2mqtt-1-button-wireless-switch-snzb-01-and-more-rdeangel/663331
